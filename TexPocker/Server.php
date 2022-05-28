@@ -8,7 +8,7 @@
  * @Description:
  */
 
-namespace TextPocker;
+namespace TexPocker;
 
 use Workerman\Connection\TcpConnection;
 use Workerman\Lib\Timer;

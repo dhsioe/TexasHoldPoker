@@ -8,12 +8,12 @@
  * @Description:
  */
 
-use TextPocker\Pocker\CardFactory;
-use TextPocker\Server;
+use TexPocker\Pocker\CardFactory;
+use TexPocker\Server;
 use Workerman\Connection\TcpConnection;
 use Workerman\Worker;
 
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * ------------------------------------------------------
@@ -72,18 +72,18 @@ $cardFactory = new CardFactory();
  * --------------------------------------------------------.
  */
 $protocols = [
-   // 游戏开始协议
-   'S_C_ON_GAME_START' => [],
-   // 发送手牌协议
-   'S_C_ON_HAND_CARDS' => [],
-   // 广播协议
-   'S_C_ON_BROADCAST' => [],
-   // 客户端加入房间协议
-   'C_S_ON_JOIN_ROOM' => ['onJoinRoom', JoinRoomProtocol::class],
-   // 玩家行动协议
-   'C_S_ON_ACTION' => ['onDoAction', PlayerActionProtocol::class],
-   // 展示手牌
-   'C_S_ON_SHOW_HAND_CARDS' => [],
+    // 游戏开始协议
+    'S_C_ON_GAME_START' => [],
+    // 发送手牌协议
+    'S_C_ON_HAND_CARDS' => [],
+    // 广播协议
+    'S_C_ON_BROADCAST' => [],
+    // 客户端加入房间协议
+    'C_S_ON_JOIN_ROOM' => ['onJoinRoom', JoinRoomProtocol::class],
+    // 玩家行动协议
+    'C_S_ON_ACTION' => ['onDoAction', PlayerActionProtocol::class],
+    // 展示手牌
+    'C_S_ON_SHOW_HAND_CARDS' => [],
 ];
 
 // 消息回调

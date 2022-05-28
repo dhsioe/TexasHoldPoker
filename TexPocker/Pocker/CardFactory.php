@@ -1,6 +1,6 @@
 <?php
 
-namespace TextPocker\Pocker;
+namespace TexPocker\Pocker;
 
 class CardFactory
 {
