@@ -60,9 +60,17 @@ class CardManager
         $this->cards = [];
         for ($i = 0; $i < count($this->cardValues); $i++) {
             for ($j = 0; $j < count($this->cardSuits); $j++) {
-                array_push($this->cards, $this->cardValues[$i], $this->cardSuits[$j]);
+                array_push(
+                    $this->cards,
+                    sprintf('%s_%s', $this->cardValues[$i], $this->cardSuits[$j])
+                );
             }
         }
+    }
+
+    public function getCards(): array
+    {
+        return $this->cards;
     }
 
     /**
