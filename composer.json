@@ -6,7 +6,7 @@
     },
     "autoload": {
         "psr-4": {
-            "TexPocke\\": "TexPocker/",
+            "TexPocker\\": "TexPocker/",
             "PockerTest\\": "tests/"
         }
     },
