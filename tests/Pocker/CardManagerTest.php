@@ -14,19 +14,27 @@ use TexPocker\Pocker\CardManager;
 
 class CardManagerTest extends TestCase
 {
+    /** @var CardManager */
     protected $cardManager;
 
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->cardManager = new CardManager();
     }
 
     public function test_can_construct()
     {
-        $this->cardManager = new CardManager();
-
         $this->assertNotEmpty(
             $this->cardManager->getCards()
         );
+    }
+
+    public function test_can_get_cards()
+    {
+        $this->assertEquals(1, count($this->cardManager->getCardByCount(1)));
+        $this->assertEquals(2, count($this->cardManager->getCardByCount(2)));
+        $this->assertEquals(3, count($this->cardManager->getCardByCount(3)));
     }
 }
