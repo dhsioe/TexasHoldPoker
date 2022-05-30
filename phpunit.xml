@@ -12,6 +12,10 @@
         <testsuite name="Pocker">
             <directory suffix="Test.php">./tests/Pocker</directory>
         </testsuite>
+
+        <testsuite name="Protocol">
+            <directory suffix="Test.php">./tests/Protocol</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
