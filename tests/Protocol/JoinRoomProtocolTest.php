@@ -1,11 +1,12 @@
 <?php
 
 /**
-  * 加入房间协议单元测试
-  * @author: hsioe1111@gmail.com
-  * @Date: 2022/05/30 
-  * @Description: 
-*/
+ * 加入房间协议单元测试
+ * @author: hsioe1111@gmail.com
+ * @Date: 2022/05/30 
+ * @Description: 
+ */
+
 namespace PockerTest\Protocol;
 
 use PHPUnit\Framework\TestCase;
