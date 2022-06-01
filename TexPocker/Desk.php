@@ -206,6 +206,28 @@ class Desk
     }
 
     /**
+     * 每轮游戏开始时
+     */
+    public function whenSetStart()
+    {
+        foreach ($this->chairToPlayers as $chair => $player) {
+            if ($player) {
+                $player->initBetCoin();
+            }
+        }
+
+        $this->initPlayingChairs();
+    }
+
+    /**
+     * 有玩家下注
+     */
+    public function whenChairBet($player, $betCoin)
+    {
+        $this->playingChairs[$player->chair]['betCoin'] += $betCoin;
+    }
+
+    /**
      *  当有玩家弃牌时
      */
     public function whenChairFold(int $chair)
@@ -216,10 +238,115 @@ class Desk
     }
 
     /**
+     * 当玩家做到座位上
+     * 
+     * @param Player $player 玩家
+     * @param int $chair 椅子
+     */
+    public function whenPlayerSeated(Player $player, int $chair)
+    {
+        $this->chairToPlayers[$chair] = $player;
+        $this->playerCount += 1;
+    }
+
+    /**
+     * 获取下一个行动的玩家
+     * 
+     * @return Player
+     */
+    public function getNextActionPlayer(): Player
+    {
+        $this->actionChair = ($this->actionChair % $this->chairCount) + 1;
+
+        while (!$this->chairToPlayers[$this->actionChair]) {
+            $this->actionChair = ($this->actionChair % $this->chairCount) + 1;
+        }
+
+        return $this->chairToPlayers[$this->actionChair];
+    }
+
+
+    /**
      * 获取当前可以行动的玩家数
      */
     public function getPlayingChairCount(): int
     {
         return count($this->playingChairs);
+    }
+
+    /**
+     * 获取一张空的椅子 
+     */
+    public function getEmptyChair(): int
+    {
+        foreach ($this->chairToPlayers as $chair => $player) {
+
+            if ($player === null) {
+                return $chair;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * 给玩家发手牌
+     */
+    public function dealCards()
+    {
+        $this->cardManager->shuffleCards();
+
+        foreach ($this->chairToPlayers as $chair => $player) {
+            if ($player) {
+                $player->onDealCards($this->cardManager->getCardByCount(2));
+            }
+        }
+    }
+
+    /**
+     * 桌子是否坐满
+     * 
+     * @return bool
+     */
+    public function isFull(): bool
+    {
+        return $this->chairCount === $this->playerCount;
+    }
+
+    /**
+     * 更新桌子上的公共牌
+     * 
+     * @param int $count 更新的张数
+     */
+    public function refreshCommuityCards(int $count)
+    {
+        $this->commuityCards = array_merge(
+            $this->commuityCards,
+            $this->cardManager->getCardByCount($count)
+        );
+
+        // 发送公共牌协议
+        $this->doSendCommuityCards();
+    }
+
+    /**
+     * 发送公共牌协议
+     * 
+     * @param array $cards ['A_Z',...] 公共牌
+     */
+    public function doSendCommuityCards()
+    {
+        foreach ($this->chairToPlayers as $chair => $player) {
+            if ($player) {
+                $player->connection->send(json_encode([
+                    'protocol' => 'S_C_ON_COMMUITY_CARDS',
+                    'data' => [
+                        'commuityCards' => $this->commuityCards,
+                        'handCards' => $player->getHandCards(),
+                        'cardType' => $player->refreshCardType($this->commuityCards)
+                    ]
+                ]));
+            }
+        }
     }
 }
