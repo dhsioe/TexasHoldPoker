@@ -161,9 +161,7 @@ class Game
         $this->lastBetCoin = 0;
         $this->lastAction = 0;
         // 初始化桌子上轮玩家的投注
-        $this->desk->clearPlayerBet();
-        // 初始化正在游戏的玩家
-        $this->desk->initPlayingChairs();
+        $this->desk->whenSetStart();
     }
 
     /**
@@ -270,7 +268,7 @@ class Game
                 $this->lastBetCoin = $betCoin;
             }
             $this->updateCoinPool($betCoin);
-            $this->desk->whenPlayerBet($player, $betCoin);
+            $this->desk->whenChairBet($player, $betCoin);
         }
 
         if (
@@ -334,7 +332,7 @@ class Game
      */
     public function onPlayerJoin($player, $chair)
     {
-        $this->desk->seatOndesk($chair, $player);
+        $this->desk->whenPlayerSeated($player, $chair);
     }
 
     /**
@@ -344,7 +342,7 @@ class Game
      */
     public function onHandCards()
     {
-        $this->desk->onDealCards();
+        $this->desk->dealCards();
         $this->nextActionPlayer();
     }
 
@@ -354,7 +352,7 @@ class Game
      */
     public function onFlop()
     {
-        $this->desk->dealFlop();
+        $this->desk->refreshCommuityCards(3);
         $this->nextActionPlayer();
     }
 
@@ -364,7 +362,7 @@ class Game
      */
     public function onTurn()
     {
-        $this->desk->dealTurn();
+        $this->desk->refreshCommuityCards(1);
         $this->nextActionPlayer();
     }
 
@@ -374,7 +372,7 @@ class Game
      */
     public function onRiver()
     {
-        $this->desk->dealRiver();
+        $this->desk->refreshCommuityCards(1);
         $this->nextActionPlayer();
     }
 
