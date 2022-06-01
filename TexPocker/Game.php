@@ -200,7 +200,7 @@ class Game
     public function nextActionPlayer()
     {
         $player = $this->desk->getNextActionPlayer();
-        $player->sendAllowActions($this->getAllowActions($player), $this->lastBetCoin);
+        $player->doSendAllowAction($this->getAllowActions($player), $this->lastBetCoin);
     }
 
     /**
