@@ -273,14 +273,14 @@ class Game
 
         if (
             $action === PlayerAction::FOLD &&
-            $this->nextIfActionFold($player, $betCoin)
+            $this->nextIfLastActionPlayer($player)
         ) {
             return;
         }
 
         if (
             in_array($action, [PlayerAction::CHECK, PlayerAction::CALL]) &&
-            $this->nextIfActionCheckOrCall($player, $betCoin)
+            $this->nextIfLastActionPlayer($player)
         ) {
             return;
         }
@@ -395,22 +395,11 @@ class Game
     }
 
     /**
-     * 玩家弃牌后是否进入下一轮
+     *  如果是最后一个玩家操作直接下一轮
+     * 
+     * @return bool
      */
-    public function nextIfActionFold($player, $betCoin)
-    {
-        if ($this->desk->isLastActionChair($player->chair)) {
-            $this->nextRound();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * 玩家Check or AllIn后是否进入下一轮
-     */
-    public function nextIfActionCheckOrCall($player, $betCoin)
+    public function nextIfLastActionPlayer(Player $player): bool
     {
         if ($this->desk->isLastActionChair($player->chair)) {
             $this->nextRound();
