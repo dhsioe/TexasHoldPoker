@@ -94,6 +94,7 @@ class Room
      */
     public static function joinRoom(string $roomId, TcpConnection $connection)
     {
+        $connection->roomId = $roomId;
         $player = self::createPlayer($connection);
         $gameInstance = self::getRoomGameInstance($roomId);
 
@@ -104,10 +105,8 @@ class Room
             $player->connection->send("Room {$roomId} is Full");
             return;
         }
-
-        $player->connection->roomId = $roomId;
-        $player->connection->chair = $chair;
-        $player->chair = $chair;
+        // 配置位置(setChair)
+        $player->setChair($chair);
 
         // 通知游戏有玩家加入
         $gameInstance->onPlayerJoin($chair, $player);

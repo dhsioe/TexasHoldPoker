@@ -10,6 +10,7 @@
 
 namespace TexPocker;
 
+use TexPocker\Protocols\JoinRoomProtocol;
 use Workerman\Connection\TcpConnection;
 use Workerman\Lib\Timer;
 use Workerman\Worker;
@@ -51,14 +52,30 @@ class Server
                     continue;
                 }
 
-                if ($timeNow - $connection->lastMessageTime > self::closeWhenTimeLong()) {
+                if ($timeNow - $connection->lastMessageTime > self::closeWhenSecondPassed()) {
                     $connection->close();
                 }
             }
         });
     }
 
-    public static function closeWhenTimeLong(): int
+    /**
+     * 加入房间
+     * 
+     * @param TcpConnection $connection 连接
+     * @param JoinRoomProtocol $protocol 加入房间协议
+     */
+    public static function onJoinRoom($connection, JoinRoomProtocol $protocol)
+    {
+        Room::joinRoom($protocol->getRoomId(), $connection);
+    }
+
+    /**
+     * 当多少秒未收到连接关闭
+     * 
+     * @return int
+     */
+    public static function closeWhenSecondPassed(): int
     {
         return 120;
     }
