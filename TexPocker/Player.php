@@ -80,11 +80,20 @@ class Player
     protected $betCoin = 0;
 
 
-    public function __construct(TcpConnection $connection, int $chair)
+    public function __construct(TcpConnection $connection)
     {
         $this->connection = $connection;
-        $this->chair = $chair;
         $this->balanceCoin = random_int(1000, 9999);
+    }
+
+    /**
+     * 配置位置
+     * 
+     * @param int $chair
+     */
+    public function setChair(int $chair)
+    {
+        $this->chair = $chair;
     }
 
     /**
