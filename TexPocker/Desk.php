@@ -197,9 +197,14 @@ class Desk
 
     /**
      *  每局游戏开始时
+     * 
+     * @param int $setCount 当前局数
      */
-    public function whenGameSetStart()
+    public function whenGameSetStart(int $setCount)
     {
+        $this->setDealer($setCount);
+        $this->setSb();
+        $this->setBb();
         $this->initPlayingChairs();
         $this->cardManager->resetCards();
         $this->commuityCards = [];

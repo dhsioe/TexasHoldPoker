@@ -133,10 +133,7 @@ class Game
         $this->coinPoolPerRound = 0;
         $this->status = GameStatus::ON_READY;
 
-        $this->desk->whenGameSetStart();
-        $this->desk->setDealer($this->setCount);
-        $this->desk->setSb();
-        $this->desk->setBb();
+        $this->desk->whenGameSetStart($this->setCount);
 
         // 发送局开始协议
         Room::broadcast($this->roomId, json_encode([
