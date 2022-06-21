@@ -67,6 +67,7 @@ class Server
      */
     public static function onJoinRoom($connection, JoinRoomProtocol $protocol)
     {
+        echo "[onJoinRoom] Connection:{$connection->id} join room: {$protocol->getRoomId()}";
         Room::joinRoom($protocol->getRoomId(), $connection);
     }
 
